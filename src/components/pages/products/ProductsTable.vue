@@ -56,7 +56,7 @@ const delete_products = () => {
     }
 }
 
-const change_min_price = (e: Event) => {
+const change_min_price = (e: any) => {
     store.getters.products.forEach((product: IProduct) => {
         if (ckecked_products_ids.value.has(product.id)) {
             product.min_price = e.target?.value
@@ -64,7 +64,7 @@ const change_min_price = (e: Event) => {
     })
 }
 
-const change_max_price = (e: Event) => {
+const change_max_price = (e: any) => {
     store.getters.products.forEach((product: IProduct) => {
         if (ckecked_products_ids.value.has(product.id)) {
             product.max_price = e.target?.value
