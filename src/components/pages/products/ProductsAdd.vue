@@ -43,6 +43,7 @@
             background: #F2F1F3;
             padding: 0 20px;
             transition: box-shadow 0.5s ease-in-out;
+            color: #000000;
             &:active, &:focus {
                 outline: none;
                 box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.2509803922) inset;
