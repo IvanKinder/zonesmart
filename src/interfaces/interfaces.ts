@@ -18,5 +18,5 @@ export interface IProduct {
 
 export interface IProductsStore {
     products: IProduct[];
-    count: Number;
+    count: number;
 }

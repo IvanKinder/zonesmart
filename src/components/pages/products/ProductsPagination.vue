@@ -58,6 +58,7 @@ watch(current_page, () => {
     align-items: center;
     gap: 10px;
     margin-top: 15px;
+    color: #000000;
     .to-page, .arrow-left, .arrow-right {
         display: grid;
         justify-items: center;

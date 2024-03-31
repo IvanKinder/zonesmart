@@ -43,6 +43,19 @@ const onImageLoad = (product_id: string) => {
     loading_images.value.delete(product_id)
 }
 
+const delete_product = (product_id: string) => {
+    store.dispatch("deleteProduct", product_id)
+}
+
+const delete_products = () => {
+    if (ckecked_products_ids.value.size > 0) {
+        ckecked_products_ids.value.forEach((product_id) => {
+            delete_product(product_id)
+            add_or_remove_from_ckecked(product_id)
+        })
+    }
+}
+
 watch(props, () => {
     showImagesLoader()
 })
@@ -68,7 +81,7 @@ watch(props, () => {
     transition(name="fade-actions")
         .products-table-actions(v-if="ckecked_products_ids.size")
             span.products-table-actions-selected Выбрано {{ ckecked_products_ids.size }} из {{ store.getters.products.length }}
-            button.products-table-actions-delete 
+            button.products-table-actions-delete(@click="delete_products")
                 img(src="/src/assets/delete_bulk.svg" alt="Удалить выделенные")
                 span Удалить выделенные
             span.products-table-actions-for-all Для всех выделенных
@@ -78,6 +91,8 @@ watch(props, () => {
                 input(placeholder="₽" type="number")
     .products-table-loading(v-if="is_loading")
         img(src="/src/assets/loading.svg")
+    .no-products(v-if="!store.getters.products.length")
+        span Нет продуктов
     .products-table-list(v-else v-for="product in store.getters.products")
         button.checkbox-btn(
             :key="product.id"
@@ -102,7 +117,11 @@ watch(props, () => {
             input(:placeholder="`${product.min_price ?? 0} ₽`" type="number")
         .row.row-max-price(:key="product.id")
             input(:placeholder="`${product.max_price ?? 0} ₽`" type="number")
-        img.row.row-del(:key="product.id" src="/src/assets/delete.svg")
+        img.row.row-del(
+            :key="product.id"
+            src="/src/assets/delete.svg"
+            @click="delete_product(product.id)"
+        )
 </template>
 
 <style lang="scss" scoped>
@@ -125,6 +144,12 @@ watch(props, () => {
     .fade-actions-enter-from,
     .fade-actions-leave-to {
         transform: translate(0, -60px);
+    }
+    .no-products {
+        color: #000000;
+        font-size: 15px;
+        text-align: center;
+        margin-top: 30px;
     }
     &-actions {
         display: grid;
@@ -149,6 +174,8 @@ watch(props, () => {
             height: 30px;
             align-self: center;
             transition: transform 0.2s ease;
+            background: #F2F1F3;
+            color: #000000;
             span {
                 font-size: 15px;
             }
@@ -199,6 +226,7 @@ watch(props, () => {
         border: 1px solid #999999;
         border-radius: 6px;
         justify-self: end;
+        background: #FFFFFF;
         &:active, &:focus {
             outline: none;
         }
@@ -241,6 +269,7 @@ watch(props, () => {
         border-color: #999999;
         align-items: center;
         justify-items: start;
+        color: #000000;
         .row {
             font-size: 15px;
             &-foto {
