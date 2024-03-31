@@ -1,54 +1,86 @@
 <script setup lang="ts">
-import ProductsAdd from "./ProductsAdd.vue"
+import { useStore } from 'vuex'
+
+const store = useStore()
+
 </script>
 
 <template lang="pug">
-.content
-    .content-title.black-text
-        h2 Мои товары
-        img(src="/src/assets/help.svg" alt="описание таблицы мои товары")
-        span.black-text 4 из 10
-    p.black-text Добавьте товары вашего магазина из одной товарной и ценовой категории (разница цены не больше 15%)
-    p.black-text Для добавления нескольких товаров введите несколько артикулов через запятую или используя клавишу Enter
-    ProductsAdd
-    .content-table
-        span test
+.products-table
+    .products-table-columns 
+        input(type="checkbox")
+        span.column-name.column-name-foto Фото
+        span.column-name.column-name-art Артикул продавца
+        span.column-name.column-name-brand Бренд
+        span.column-name.column-name-name Название
+        span.column-name.column-name-lost Остаток, шт.
+        span.column-name.column-name-cur-price Текущая цена
+        span.column-name.column-name-min-price Минимальная цена
+        span.column-name.column-name-max-price Максимальная цена
+        span.column-name.column-name-del Удалить
+    .products-table-list(v-for="product in store.getters.products")
+        input(type="checkbox" :key="product.id")
+        .row.row-foto
+            img(:key="product.id" :src="product.images?.[0]" :alt="`Изображение ${product.title}`")
+        span.row.row-art(:key="product.id") {{ product.brand_id }}
+        span.row.row-brand(:key="product.id") {{ product.brand_name }}
+        span.row.row-name(:key="product.id") {{ product.title }}
+        span.row.row-lost(:key="product.id") {{ product.quantity }}
+        span.row.row-cur-price(:key="product.id") {{ product.price }}
+        span.row.row-min-price(:key="product.id") {{ product.min_price }}
+        span.row.row-max-price(:key="product.id") {{ product.max_price }}
+        span.row.row-del(:key="product.id") Удалить
 </template>
 
 <style lang="scss" scoped>
-.content {
-    .black-text {
-        color: black;
-    }
-    display: grid;
-    grid-template-rows: repeat(5, min-content);
-    justify-items: start;
-    width: 1520px;
-    height: 632px;
-    border-radius: 15px;
-    box-shadow: 0px 6px 8px 0px #00000029;
-    background: #FFFFFF;
-    padding: 25px 40px;
-    &-title {
-        h2 {
-            font-size: 28px;
-        }
-        img {
-            margin-top: 5px;
-            cursor: pointer;
-        }
+.products-table {
+    width: 100%;
+    height: 305px;
+    overflow: scroll;
+    &-columns {
+        position: sticky;
+        top: 0;
         display: grid;
-        grid-template-columns: repeat(3, max-content);
+        grid-template-columns: 20px 60px 140px 130px 1fr 115px 115px repeat(2, 160px) 80px;
+        gap: 15px;
+        border-bottom: 1px solid;
+        border-color: #999999;
+        height: 60px;
         align-items: center;
-        gap: 10px;
-        span {
-            margin: 9px 0  0 10px;
+        background: #FFFFFF;
+        input {
+            justify-self: start;
+        }
+        .column-name {
             font-size: 15px;
             color: #999999;
+            &-name {
+                justify-self: start;
+            }
         }
     }
-    p {
-        font-size: 15px;
+    &-list {
+        display: grid;
+        grid-template-columns: 20px 60px 140px 130px 1fr 115px 115px repeat(2, 160px) 80px;
+        gap: 15px;
+        border-bottom: 1px solid;
+        border-color: #999999;
+        align-items: center;
+        justify-items: start;
+        .row {
+            font-size: 15px;
+            &-foto {
+                display: grid;
+                align-items: center;
+                width: 50px;
+                height: 50px;
+                overflow: hidden;
+                padding: 5px 0;
+                img {
+                    width: 100%;
+                }
+            }
+        }
     }
 }
 </style>

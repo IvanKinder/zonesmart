@@ -19,7 +19,7 @@
         span Добавить
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .product-add {
     display: flex;
     gap: 18px;

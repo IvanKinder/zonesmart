@@ -1,109 +1,58 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import axios from 'axios'
-import { urls } from '../../../router/urls'
-import ProductsTable from './ProductsTable.vue'
-
-const router = useRouter()
-const store = useStore()
-const email = ref(store.getters.email)
-
-const reauth = () => {
-    alert("Ошибка, попробуйте войти заново")
-    store.dispatch("updateAccess", "")
-    router.push("/auth")
-}
-
-const get_products = async (limit: Number, offset: Number) => {
-    try {
-        const res = await axios.get(urls.get_products, {
-            params: {
-                limit: limit,
-                offset: offset
-                },
-            headers: {
-                'Authorization':  `JWT ${store.getters.access}`
-            }
-        })
-        if (res.status === 200) {
-            store.dispatch("updateProducts", res.data?.results)
-        } else {
-            reauth()
-        }
-    }
-    catch (e: any) {
-        if (e.response?.status === 401 && e.response?.data?.code === "token_not_valid") {
-            refresh_session()
-        } else {
-            reauth()
-        }
-    }
-}
-
-const refresh_session = async () => {
-    try {
-        const res = await axios.post(urls.refresh_sesson, {
-            refresh: store.getters.refresh
-        })
-        if (res.status === 200) {
-            store.dispatch("updateAccess", res.data?.access)
-        } else {
-            reauth()
-        }
-    } catch {
-        reauth()
-    }
-}
-
-onMounted(() => {
-    if (!store.getters.access) {
-        router.push('/auth')
-    }
-    get_products(10, 0)
-})
+import ProductsAdd from "./ProductsAdd.vue"
+import ProductsTable from "./ProductsTable.vue"
 </script>
 
 <template lang="pug">
-.products-container
-    header
-        menu
-            img.notify(src="/src/assets/notifications.svg" alt="уведомления")
-            span {{ email }}
-            img.open-arrow(src="/src/assets/arrow.svg")
-    ProductsTable.products-table
+.content
+    .content-title.black-text
+        h2 Мои товары
+        img(src="/src/assets/help.svg" alt="описание таблицы мои товары")
+        span.black-text 4 из 10
+    p.black-text Добавьте товары вашего магазина из одной товарной и ценовой категории (разница цены не больше 15%)
+    p.black-text Для добавления нескольких товаров введите несколько артикулов через запятую или используя клавишу Enter
+    ProductsAdd
+    ProductsTable.content-table
 </template>
 
 <style lang="scss" scoped>
-.products-container {
-    display: grid;
-    gap: 30px;
-    .products-table {
-        justify-self: center;
+.content {
+    .black-text {
+        color: black;
     }
-    header {
-        display: grid;
-        height: 80px;
-        background: #FFFFFF;
-        menu {
-            display: grid;
-            grid-template-columns: repeat(3, min-content);
-            align-items: center;
-            gap: 5px;
-            padding-right: 40px;
-            justify-self: end;
-            margin: 0;
-            .notify {
-                margin-right: 26px;
-            }
-            span {
-                color: black;
-            }
-            .open-arrow, .notify, span {
-                cursor: pointer;
-            }
+    display: grid;
+    grid-template-rows: repeat(5, min-content);
+    justify-items: start;
+    max-width: 1520px;
+    width: 90%;
+    height: 642px;
+    border-radius: 15px;
+    box-shadow: 0px 6px 8px 0px #00000029;
+    background: #FFFFFF;
+    padding: 20px 40px;
+    &-title {
+        h2 {
+            font-size: 28px;
         }
+        img {
+            margin-top: 5px;
+            cursor: pointer;
+        }
+        display: grid;
+        grid-template-columns: repeat(3, max-content);
+        align-items: center;
+        gap: 10px;
+        span {
+            margin: 9px 0  0 10px;
+            font-size: 15px;
+            color: #999999;
+        }
+    }
+    p {
+        font-size: 15px;
+    }
+    &-table {
+        margin-top: 10px;
     }
 }
 </style>

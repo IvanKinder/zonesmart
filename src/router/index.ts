@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import AuthPage from "../components/pages/auth/AuthPage.vue"
-import Products from '../components/pages/products/Products.vue';
+import ProductsPage from '../components/pages/products/ProductsPage.vue';
 import Page404 from '../components/pages/Page404.vue';
 
 const routes = [
     { path: '/auth', component: AuthPage },
-    { path: '/', component: Products },
+    { path: '/', component: ProductsPage },
     {
         path: '/404',
         component: Page404,

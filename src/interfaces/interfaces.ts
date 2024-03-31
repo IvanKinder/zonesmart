@@ -5,6 +5,7 @@ export interface IAuthStore {
 }
 
 export interface IProduct {
+    id: string;
     images: any[];
     remote_id: string;
     brand_name: string;
