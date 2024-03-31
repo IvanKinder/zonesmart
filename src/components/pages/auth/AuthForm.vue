@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import axios from 'axios'
+import { urls } from '../../../router/urls'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const store = useStore()
 
 const email = ref("")
@@ -12,15 +15,16 @@ const show_pass = ref(false)
 
 const toLogin = async () => {
     try {
-        const res = await axios.post("https://dev-ar.zonesmart.com/api/user/jwt/create/", {
+        const res = await axios.post(urls.auth_url, {
             email: email.value,
             password: password.value
         })
         if (res.status === 200) {
             store.dispatch("updateAccess", res.data?.access)
             store.dispatch("updateRefresh", res.data?.refresh)
+            router.push('/')
         } else {
-            console.error(res.status)
+            alert("Ошибка авторизации")
         }
     }
     catch (e) {
@@ -28,6 +32,11 @@ const toLogin = async () => {
     }
 }
 
+onMounted(() => {
+    if (store.getters.access && store.getters.refresh) {
+        router.push('/')
+    }
+})
 </script>
 
 <template lang="pug">

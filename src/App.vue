@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import AuthPage from './components/pages/auth/AuthPage.vue'
 </script>
 
 <template lang="pug">
-   AuthPage
+   <router-view/>
 </template>
 
 <style scoped>
