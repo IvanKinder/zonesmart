@@ -12,7 +12,6 @@ const email = ref(store.getters.email)
 const is_loading = ref(true)
 
 const reauth = () => {
-    alert("Ошибка, попробуйте войти заново")
     store.dispatch("updateAccess", "")
     router.push("/auth")
 }
