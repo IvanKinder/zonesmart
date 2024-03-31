@@ -1,4 +1,19 @@
 export interface IAuthStore {
     access: string;
     refresh: string;
-  }
+}
+
+export interface IProduct {
+    images: any[];
+    remote_id: string;
+    brand_name: string;
+    title: string;
+    quantity: number;
+    price: number;
+    min_price: number;
+    max_price: number;
+}
+
+export interface IProductsStore {
+    products: IProduct[];
+}

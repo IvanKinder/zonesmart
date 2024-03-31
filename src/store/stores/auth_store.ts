@@ -9,20 +9,20 @@ export default {
     },
     mutations: {
         SET_ACCESS(state: IAuthStore, access: string) {
-        state.access = access
+            state.access = access
         },
         SET_REFRESH(state: IAuthStore, refresh: string) {
-        state.refresh = refresh
+            state.refresh = refresh
         }
     },
     actions: {
         updateAccess({ commit }: { commit: Commit }, access: string) {
-        commit('SET_ACCESS', access)
-        Cookies.set('kinder-access', access, { expires: 1 })
+            commit('SET_ACCESS', access)
+            Cookies.set('kinder-access', access, { expires: 1 })
         },
         updateRefresh({ commit }: { commit: Commit }, refresh: string) {
-        commit('SET_REFRESH', refresh)
-        Cookies.set('kinder-refresh', refresh, { expires: 1 })
+            commit('SET_REFRESH', refresh)
+            Cookies.set('kinder-refresh', refresh, { expires: 1 })
         }
     },
     getters: {
