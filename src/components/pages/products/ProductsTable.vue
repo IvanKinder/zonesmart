@@ -54,7 +54,7 @@ watch(props, () => {
         button.checkbox-btn(
             @click="select_all"
         )
-            img(v-if="ckecked_products_ids.size === store.getters.products.length" src="/src/assets/checked.svg")
+            img(v-if="(ckecked_products_ids.size > 0) && (ckecked_products_ids.size === store.getters.products.length)" src="/src/assets/checked.svg")
             img(v-if="(ckecked_products_ids.size > 0) && (ckecked_products_ids.size < store.getters.products.length)" src="/src/assets/some_checked.svg")
         span.column-name.column-name-foto Фото
         span.column-name.column-name-art Артикул продавца
@@ -65,6 +65,8 @@ watch(props, () => {
         span.column-name.column-name-min-price Минимальная цена
         span.column-name.column-name-max-price Максимальная цена
         span.column-name.column-name-del Удалить
+    .products-table-actions(v-if="ckecked_products_ids.size")
+        span test
     .products-table-loading(v-if="is_loading")
         img(src="/src/assets/loading.svg")
     .products-table-list(v-else v-for="product in store.getters.products")
@@ -107,6 +109,14 @@ watch(props, () => {
     width: 100%;
     height: 305px;
     overflow: scroll;
+    &-actions {
+        position: sticky;
+        top: 60px;
+        z-index: 1;
+        height: 60px;
+        background: #e2e2e2;
+        border-bottom: 1px solid #00000033
+    }
     .checkbox-btn {
         position: relative;
         width: 19px;

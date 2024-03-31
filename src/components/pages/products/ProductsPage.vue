@@ -30,6 +30,7 @@ const get_products = async (limit: Number, offset: Number) => {
         })
         if (res.status === 200) {
             store.dispatch("updateProducts", res.data?.results)
+            store.dispatch("updateCount", res.data?.count)
             is_loading.value = false
         } else {
             reauth()

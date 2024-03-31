@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import ProductsAdd from "./ProductsAdd.vue"
 import ProductsTable from "./ProductsTable.vue"
+import { useStore } from 'vuex'
 
 interface Props {
     is_loading: boolean;
 }
 
 defineProps<Props>()
+const store = useStore()
 </script>
 
 <template lang="pug">
@@ -14,7 +16,7 @@ defineProps<Props>()
     .content-title.black-text
         h2 Мои товары
         img(src="/src/assets/help.svg" alt="описание таблицы мои товары")
-        span.black-text 4 из 10
+        span.black-text {{ store.getters.products.length }} из {{ store.getters.count }}
     p.black-text Добавьте товары вашего магазина из одной товарной и ценовой категории (разница цены не больше 15%)
     p.black-text Для добавления нескольких товаров введите несколько артикулов через запятую или используя клавишу Enter
     ProductsAdd
