@@ -5,7 +5,8 @@ import Cookies from 'js-cookie'
 export default {
     state: {
         access: Cookies.get('kinder-access'),
-        refresh: Cookies.get('kinder-refresh')
+        refresh: Cookies.get('kinder-refresh'),
+        email: Cookies.get('kinder-email')
     },
     mutations: {
         SET_ACCESS(state: IAuthStore, access: string) {
@@ -13,6 +14,9 @@ export default {
         },
         SET_REFRESH(state: IAuthStore, refresh: string) {
             state.refresh = refresh
+        },
+        SET_EMAIL(state: IAuthStore, email: string) {
+            state.email = email
         }
     },
     actions: {
@@ -23,10 +27,15 @@ export default {
         updateRefresh({ commit }: { commit: Commit }, refresh: string) {
             commit('SET_REFRESH', refresh)
             Cookies.set('kinder-refresh', refresh, { expires: 1 })
+        },
+        updateEmail({ commit }: { commit: Commit }, email: string) {
+            commit('SET_EMAIL', email)
+            Cookies.set('kinder-email', email, { expires: 1 })
         }
     },
     getters: {
         access: (state: IAuthStore) => state.access,
-        refresh: (state: IAuthStore) => state.refresh
+        refresh: (state: IAuthStore) => state.refresh,
+        email: (state: IAuthStore) => state.email
     }
 }

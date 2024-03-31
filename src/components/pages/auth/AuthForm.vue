@@ -27,6 +27,7 @@ const toLogin = async () => {
         if (res.status === 200) {
             store.dispatch("updateAccess", res.data?.access)
             store.dispatch("updateRefresh", res.data?.refresh)
+            store.dispatch("updateEmail", email.value)
             router.push('/')
         } else {
             alert("Ошибка авторизации")
@@ -40,7 +41,7 @@ const toLogin = async () => {
 }
 
 onMounted(() => {
-    if (store.getters.access && store.getters.refresh) {
+    if (store.getters.access) {
         router.push('/')
     }
 })

@@ -1,6 +1,7 @@
 export interface IAuthStore {
     access: string;
     refresh: string;
+    email: string;
 }
 
 export interface IProduct {
