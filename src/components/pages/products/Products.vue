@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ProductsAdd from "./ProductsAdd.vue"
 import ProductsTable from "./ProductsTable.vue"
+import ProductsPagination from "./ProductsPagination.vue"
 import { useStore } from 'vuex'
 
 interface Props {
@@ -21,6 +22,7 @@ const store = useStore()
     p.black-text Для добавления нескольких товаров введите несколько артикулов через запятую или используя клавишу Enter
     ProductsAdd
     ProductsTable.content-table(:is_loading="is_loading")
+    ProductsPagination
 </template>
 
 <style lang="scss" scoped>
@@ -33,11 +35,11 @@ const store = useStore()
     justify-items: start;
     max-width: 1520px;
     width: 90%;
-    height: 642px;
+    height: 662px;
     border-radius: 15px;
     box-shadow: 0px 6px 8px 0px #00000029;
     background: #FFFFFF;
-    padding: 20px 40px;
+    padding: 10px 40px;
     &-title {
         h2 {
             font-size: 28px;

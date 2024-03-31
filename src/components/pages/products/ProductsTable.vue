@@ -65,16 +65,17 @@ watch(props, () => {
         span.column-name.column-name-min-price Минимальная цена
         span.column-name.column-name-max-price Максимальная цена
         span.column-name.column-name-del Удалить
-    .products-table-actions(v-if="ckecked_products_ids.size")
-        span.products-table-actions-selected Выбрано {{ ckecked_products_ids.size }} из {{ store.getters.products.length }}
-        button.products-table-actions-delete 
-            img(src="/src/assets/delete_bulk.svg" alt="Удалить выделенные")
-            span Удалить выделенные
-        span.products-table-actions-for-all Для всех выделенных
-        .products-table-actions-prices.min
-            input(placeholder="₽" type="number")
-        .products-table-actions-prices.max
-            input(placeholder="₽" type="number")
+    transition(name="fade-actions")
+        .products-table-actions(v-if="ckecked_products_ids.size")
+            span.products-table-actions-selected Выбрано {{ ckecked_products_ids.size }} из {{ store.getters.products.length }}
+            button.products-table-actions-delete 
+                img(src="/src/assets/delete_bulk.svg" alt="Удалить выделенные")
+                span Удалить выделенные
+            span.products-table-actions-for-all Для всех выделенных
+            .products-table-actions-prices.min
+                input(placeholder="₽" type="number")
+            .products-table-actions-prices.max
+                input(placeholder="₽" type="number")
     .products-table-loading(v-if="is_loading")
         img(src="/src/assets/loading.svg")
     .products-table-list(v-else v-for="product in store.getters.products")
@@ -117,6 +118,14 @@ watch(props, () => {
     width: 100%;
     height: 305px;
     overflow: scroll;
+    .fade-actions-enter-active,
+    .fade-actions-leave-active {
+        transition: transform 0.3s ease;
+    }
+    .fade-actions-enter-from,
+    .fade-actions-leave-to {
+        transform: translate(0, -60px);
+    }
     &-actions {
         display: grid;
         grid-template-columns: 170px 200px 1fr 215px 255px;
@@ -201,7 +210,7 @@ watch(props, () => {
     }
     &-columns {
         position: sticky;
-        z-index: 1;
+        z-index: 2;
         top: 0;
         display: grid;
         grid-template-columns: 25px 60px 140px 130px 1fr 115px 115px repeat(2, 160px) 80px;
