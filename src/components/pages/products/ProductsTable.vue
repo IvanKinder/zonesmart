@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ProductsAdd from "./ProductsAdd.vue"
+</script>
 
 <template lang="pug">
 .content
@@ -8,8 +10,7 @@
         span.black-text 4 из 10
     p.black-text Добавьте товары вашего магазина из одной товарной и ценовой категории (разница цены не больше 15%)
     p.black-text Для добавления нескольких товаров введите несколько артикулов через запятую или используя клавишу Enter
-    .content-search
-        span test
+    ProductsAdd
     .content-table
         span test
 </template>
@@ -45,6 +46,9 @@
             font-size: 15px;
             color: #999999;
         }
+    }
+    p {
+        font-size: 15px;
     }
 }
 </style>
