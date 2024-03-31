@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useStore } from 'vuex'
 import type { IProduct } from '../../../interfaces/interfaces'
 
@@ -7,10 +7,11 @@ interface Props {
     is_loading: boolean;
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const store = useStore()
 const ckecked_products_ids = ref<Set<string>>(new Set())
+const loading_images = ref<Set<string>>(new Set())
 
 const add_or_remove_from_ckecked = (product_id: string) => {
     if (ckecked_products_ids.value.has(product_id)) {
@@ -31,6 +32,20 @@ const select_all = () => {
         })
     }
 }
+
+const showImagesLoader = () => {
+    store.getters.products.forEach((product: IProduct) => {
+        loading_images.value.add(product.id)
+    })
+}
+
+const onImageLoad = (product_id: string) => {
+    loading_images.value.delete(product_id)
+}
+
+watch(props, () => {
+    showImagesLoader()
+})
 </script>
 
 <template lang="pug">
@@ -58,8 +73,13 @@ const select_all = () => {
             @click="() => add_or_remove_from_ckecked(product.id)"
         )
             img(v-if="ckecked_products_ids.has(product.id)" src="/src/assets/checked.svg")
-        .row.row-foto
-            img(:key="product.id" :src="product.images?.[0]" :alt="`Изображение ${product.title}`")
+        .row.row-foto(:key="product.id")
+            img.row-foto-preview(
+                :src="product.images?.[0]"
+                :alt="`Изображение ${product.title}`"
+                @load="onImageLoad(product.id)"
+            )
+            img.row-foto-loader(v-if="loading_images.has(product.id)" src="/src/assets/loading.svg")
         .row.row-art(:key="product.id")
             img(v-if="product.brand_id" src="/src/assets/link.svg")
             span {{ product.brand_id }}
@@ -75,6 +95,14 @@ const select_all = () => {
 </template>
 
 <style lang="scss" scoped>
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
 .products-table {
     width: 100%;
     height: 305px;
@@ -116,14 +144,6 @@ const select_all = () => {
     &-loading {
         display: grid;
         margin-top: 40px;
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
         img {
             justify-self: center;
             animation: rotate 4s linear infinite;
@@ -146,8 +166,13 @@ const select_all = () => {
                 height: 50px;
                 overflow: hidden;
                 padding: 5px 0;
-                img {
+                &-preview {
                     width: 100%;
+                }
+                &-loader {
+                    width: 30px;
+                    justify-self: center;
+                    animation: rotate 4s linear infinite;
                 }
             }
             &-art {
