@@ -18,20 +18,20 @@ import AuthForm from './AuthForm.vue';
 .auth-container {
     display: grid;
     justify-items: center;
-    gap: 50px;
+    gap: 100px;
     .header {
         width: 100%;
         display: grid;
-        grid-template-columns: 1fr 202px;
+        grid-template-columns: 1fr 218px;
         &-item {
-            padding: 25px 20px;
+            padding: 31px 28px;
             &-support {
                 display: grid;
                 grid-template-columns: repeat(3, max-content);
                 gap: 8px;
                 a {
                     font-size: 15px;
-                    line-height: 27px;
+                    line-height: 30px;
                     color: #999999;
                 }
                 img {

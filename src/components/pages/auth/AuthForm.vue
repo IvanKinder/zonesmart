@@ -12,8 +12,13 @@ const email = ref("")
 const password = ref("")
 const login_enabled = computed(() => email.value && password.value);
 const show_pass = ref(false)
+const is_loading = ref(false)
 
 const toLogin = async () => {
+    if (!login_enabled.value) return
+    
+    is_loading.value = true
+
     try {
         const res = await axios.post(urls.auth_url, {
             email: email.value,
@@ -30,6 +35,8 @@ const toLogin = async () => {
     catch (e) {
         alert("Ошибка авторизации")
     }
+
+    is_loading.value = false
 }
 
 onMounted(() => {
@@ -72,7 +79,10 @@ form.auth-form(class="review-form" @submit.prevent="onSubmit")
     button.login-btn(
         :class="!login_enabled ? 'login-btn-disabled' : 'login-btn-enabled'"
         @click="toLogin"
-    ) Войти
+        :disabled="is_loading"
+    )
+        span(v-if="!is_loading") Войти
+        img(src="/src/assets/loading.svg" v-else)
 </template>
 
 <style lang="scss" scoped>
@@ -172,6 +182,17 @@ form.auth-form(class="review-form" @submit.prevent="onSubmit")
                 border: 0;
                 outline: none;
             }
+        }
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        img {
+            animation: rotate 4s linear infinite;
         }
     }
 }
