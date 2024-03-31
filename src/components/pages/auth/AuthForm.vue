@@ -169,6 +169,9 @@ form.auth-form(class="review-form" @submit.prevent="onSubmit")
             box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.5) inset;
             transition: transform 0.2s ease, box-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
             color: #b9b9bd;
+            &:hover {
+                transform: scale(1.05);
+            }
             &:active {
                 transform: scale(0.95);
             }

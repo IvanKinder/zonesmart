@@ -62,6 +62,9 @@
         transition: transform 0.2s ease;
         color: #999999;
         font-size: 15px;
+        &:hover {
+            transform: scale(1.05);
+        }
         &:active {
             transform: scale(0.95);
         }
