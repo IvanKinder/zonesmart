@@ -10,6 +10,12 @@ const router = useRouter()
 const store = useStore()
 const email = ref(store.getters.email)
 
+const reauth = () => {
+    alert("Ошибка, попробуйте войти заново")
+    store.dispatch("updateAccess", "")
+    router.push("/auth")
+}
+
 const get_products = async (limit: Number, offset: Number) => {
     try {
         const res = await axios.get(urls.get_products, {
@@ -24,11 +30,30 @@ const get_products = async (limit: Number, offset: Number) => {
         if (res.status === 200) {
             store.dispatch("updateProducts", res.data?.results)
         } else {
-            alert("Ошибка")
+            reauth()
         }
     }
-    catch {
-        alert("Ошибка")
+    catch (e: any) {
+        if (e.response?.status === 401 && e.response?.data?.code === "token_not_valid") {
+            refresh_session()
+        } else {
+            reauth()
+        }
+    }
+}
+
+const refresh_session = async () => {
+    try {
+        const res = await axios.post(urls.refresh_sesson, {
+            refresh: store.getters.refresh
+        })
+        if (res.status === 200) {
+            store.dispatch("updateAccess", res.data?.access)
+        } else {
+            reauth()
+        }
+    } catch {
+        reauth()
     }
 }
 
