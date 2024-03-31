@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex'
 import type { IProduct } from '../../../interfaces/interfaces'
 
+interface Props {
+    is_loading: boolean;
+}
+
+defineProps<Props>()
+
 const store = useStore()
 const ckecked_products_ids = ref<Set<string>>(new Set())
-const is_loading = ref(true)
 
 const add_or_remove_from_ckecked = (product_id: string) => {
     if (ckecked_products_ids.value.has(product_id)) {
@@ -30,7 +35,7 @@ const select_all = () => {
 
 <template lang="pug">
 .products-table
-    .products-table-columns 
+    .products-table-columns
         button.checkbox-btn(
             @click="select_all"
         )
@@ -45,7 +50,9 @@ const select_all = () => {
         span.column-name.column-name-min-price Минимальная цена
         span.column-name.column-name-max-price Максимальная цена
         span.column-name.column-name-del Удалить
-    .products-table-list(v-for="product in store.getters.products")
+    .products-table-loading(v-if="is_loading")
+        img(src="/src/assets/loading.svg")
+    .products-table-list(v-else v-for="product in store.getters.products")
         button.checkbox-btn(
             :key="product.id"
             @click="() => add_or_remove_from_ckecked(product.id)"
@@ -104,6 +111,22 @@ const select_all = () => {
         .column-name {
             font-size: 15px;
             color: #999999;
+        }
+    }
+    &-loading {
+        display: grid;
+        margin-top: 40px;
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        img {
+            justify-self: center;
+            animation: rotate 4s linear infinite;
         }
     }
     &-list {

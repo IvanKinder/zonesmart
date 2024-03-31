@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import ProductsAdd from "./ProductsAdd.vue"
 import ProductsTable from "./ProductsTable.vue"
+
+interface Props {
+    is_loading: boolean;
+}
+
+defineProps<Props>()
 </script>
 
 <template lang="pug">
@@ -12,7 +18,7 @@ import ProductsTable from "./ProductsTable.vue"
     p.black-text Добавьте товары вашего магазина из одной товарной и ценовой категории (разница цены не больше 15%)
     p.black-text Для добавления нескольких товаров введите несколько артикулов через запятую или используя клавишу Enter
     ProductsAdd
-    ProductsTable.content-table
+    ProductsTable.content-table(:is_loading="is_loading")
 </template>
 
 <style lang="scss" scoped>

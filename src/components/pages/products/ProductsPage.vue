@@ -9,6 +9,7 @@ import Products from './Products.vue'
 const router = useRouter()
 const store = useStore()
 const email = ref(store.getters.email)
+const is_loading = ref(true)
 
 const reauth = () => {
     alert("Ошибка, попробуйте войти заново")
@@ -29,6 +30,7 @@ const get_products = async (limit: Number, offset: Number) => {
         })
         if (res.status === 200) {
             store.dispatch("updateProducts", res.data?.results)
+            is_loading.value = false
         } else {
             reauth()
         }
@@ -72,7 +74,7 @@ onMounted(() => {
             img.notify(src="/src/assets/notifications.svg" alt="уведомления")
             span {{ email }}
             img.open-arrow(src="/src/assets/arrow.svg")
-    Products.products
+    Products.products(:is_loading="is_loading")
 </template>
 
 <style lang="scss" scoped>
