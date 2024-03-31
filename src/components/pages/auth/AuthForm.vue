@@ -1,10 +1,32 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
+import axios from 'axios'
+
+const store = useStore()
 
 const email = ref("")
 const password = ref("")
 const login_enabled = computed(() => email.value && password.value);
 const show_pass = ref(false)
+
+const toLogin = async () => {
+    try {
+        const res = await axios.post("https://dev-ar.zonesmart.com/api/user/jwt/create/", {
+            email: email.value,
+            password: password.value
+        })
+        if (res.status === 200) {
+            store.dispatch("updateAccess", res.data?.access)
+            store.dispatch("updateRefresh", res.data?.refresh)
+        } else {
+            console.error(res.status)
+        }
+    }
+    catch (e) {
+        alert("Ошибка авторизации")
+    }
+}
 
 </script>
 
@@ -38,7 +60,10 @@ form.auth-form(class="review-form" @submit.prevent="onSubmit")
             )
         .forget-password 
             a(href="#") Забыли пароль?
-    button.login-btn(:class="!login_enabled ? 'login-btn-disabled' : 'login-btn-enabled'") Войти
+    button.login-btn(
+        :class="!login_enabled ? 'login-btn-disabled' : 'login-btn-enabled'"
+        @click="toLogin"
+    ) Войти
 </template>
 
 <style lang="scss" scoped>
