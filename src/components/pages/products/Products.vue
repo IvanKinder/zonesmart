@@ -6,6 +6,7 @@ import { useStore } from 'vuex'
 
 interface Props {
     is_loading: boolean;
+    get_products: Function;
 }
 
 defineProps<Props>()
@@ -22,7 +23,7 @@ const store = useStore()
     p.black-text Для добавления нескольких товаров введите несколько артикулов через запятую или используя клавишу Enter
     ProductsAdd
     ProductsTable.content-table(:is_loading="is_loading")
-    ProductsPagination
+    ProductsPagination(:get_products="get_products")
 </template>
 
 <style lang="scss" scoped>

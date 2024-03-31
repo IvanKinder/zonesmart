@@ -75,7 +75,7 @@ onMounted(() => {
             img.notify(src="/src/assets/notifications.svg" alt="уведомления")
             span {{ email }}
             img.open-arrow(src="/src/assets/arrow.svg")
-    Products.products(:is_loading="is_loading")
+    Products.products(:is_loading="is_loading" :get_products="get_products")
 </template>
 
 <style lang="scss" scoped>
