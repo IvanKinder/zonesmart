@@ -48,7 +48,7 @@ watch(current_page, () => {
     )
         span {{ i }}
     .arrow-right(@click="to_next_page" :class="current_page === pages_count ? 'disabled' : 'enabled'")
-        img(v-if="current_page !== pages_count" src="/src/assets/arrow.svg")
+        img(v-if="(pages_count > 1) && (current_page !== pages_count)" src="/src/assets/arrow.svg")
 </template>
 
 <style lang="scss" scoped>

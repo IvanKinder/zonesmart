@@ -18,6 +18,7 @@ const reauth = () => {
 }
 
 const get_products = async (limit: Number, offset: Number) => {
+    is_loading.value = true
     try {
         const res = await axios.get(urls.get_products, {
             params: {

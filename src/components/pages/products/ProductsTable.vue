@@ -56,6 +56,22 @@ const delete_products = () => {
     }
 }
 
+const change_min_price = (e: Event) => {
+    store.getters.products.forEach((product: IProduct) => {
+        if (ckecked_products_ids.value.has(product.id)) {
+            product.min_price = e.target?.value
+        }
+    })
+}
+
+const change_max_price = (e: Event) => {
+    store.getters.products.forEach((product: IProduct) => {
+        if (ckecked_products_ids.value.has(product.id)) {
+            product.max_price = e.target?.value
+        }
+    })
+}
+
 watch(props, () => {
     showImagesLoader()
 })
@@ -86,42 +102,42 @@ watch(props, () => {
                 span Удалить выделенные
             span.products-table-actions-for-all Для всех выделенных
             .products-table-actions-prices.min
-                input(placeholder="₽" type="number")
+                input(placeholder="₽" type="number" @input="change_min_price")
             .products-table-actions-prices.max
-                input(placeholder="₽" type="number")
+                input(placeholder="₽" type="number" @input="change_max_price")
     .products-table-loading(v-if="is_loading")
         img(src="/src/assets/loading.svg")
-    .no-products(v-if="!store.getters.products.length")
+    .no-products(v-else-if="!store.getters.products.length")
         span Нет продуктов
-    .products-table-list(v-else v-for="product in store.getters.products")
-        button.checkbox-btn(
-            :key="product.id"
-            @click="() => add_or_remove_from_ckecked(product.id)"
-        )
-            img(v-if="ckecked_products_ids.has(product.id)" src="/src/assets/checked.svg")
-        .row.row-foto(:key="product.id")
-            img.row-foto-preview(
-                :src="product.images?.[0]"
-                :alt="`Изображение ${product.title}`"
-                @load="onImageLoad(product.id)"
+    transition-group(v-else name="fade")
+        .products-table-list(v-for="product in store.getters.products" :key="product.id")
+            button.checkbox-btn(
+                @click="() => add_or_remove_from_ckecked(product.id)"
             )
-            img.row-foto-loader(v-if="loading_images.has(product.id)" src="/src/assets/loading.svg")
-        .row.row-art(:key="product.id")
-            img(v-if="product.brand_id" src="/src/assets/link.svg")
-            span {{ product.brand_id }}
-        span.row.row-brand(:key="product.id") {{ product.brand_name }}
-        span.row.row-name(:key="product.id") {{ product.title }}
-        span.row.row-lost(:key="product.id") {{ product.quantity }}
-        span.row.row-cur-price(:key="product.id") {{ product.price }} ₽
-        .row.row-min-price(:key="product.id")
-            input(:placeholder="`${product.min_price ?? 0} ₽`" type="number")
-        .row.row-max-price(:key="product.id")
-            input(:placeholder="`${product.max_price ?? 0} ₽`" type="number")
-        img.row.row-del(
-            :key="product.id"
-            src="/src/assets/delete.svg"
-            @click="delete_product(product.id)"
-        )
+                img(v-if="ckecked_products_ids.has(product.id)" src="/src/assets/checked.svg")
+            .row.row-foto(:key="product.id")
+                img.row-foto-preview(
+                    :src="product.images?.[0]"
+                    :alt="`Изображение ${product.title}`"
+                    @load="onImageLoad(product.id)"
+                )
+                img.row-foto-loader(v-if="loading_images.has(product.id)" src="/src/assets/loading.svg")
+            .row.row-art(:key="product.id")
+                img(v-if="product.brand_id" src="/src/assets/link.svg")
+                span {{ product.brand_id }}
+            span.row.row-brand(:key="product.id") {{ product.brand_name }}
+            span.row.row-name(:key="product.id") {{ product.title }}
+            span.row.row-lost(:key="product.id") {{ product.quantity }}
+            span.row.row-cur-price(:key="product.id") {{ product.price }} ₽
+            .row.row-min-price(:key="product.id")
+                input(:placeholder="`${product.min_price ?? 0} ₽`" type="number")
+            .row.row-max-price(:key="product.id")
+                input(:placeholder="`${product.max_price ?? 0} ₽`" type="number")
+            img.row.row-del(
+                :key="product.id"
+                src="/src/assets/delete.svg"
+                @click="delete_product(product.id)"
+            )
 </template>
 
 <style lang="scss" scoped>
@@ -145,6 +161,14 @@ watch(props, () => {
     .fade-actions-leave-to {
         transform: translate(0, -60px);
     }
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity 0.3s ease;
+    }
+    .fade-enter-from,
+    .fade-leave-to {
+        opacity: 0;
+    }
     .no-products {
         color: #000000;
         font-size: 15px;
@@ -162,8 +186,8 @@ watch(props, () => {
         height: 60px;
         background: #e2e2e2;
         border-bottom: 1px solid #00000033;
+        color: #000000;
         &-selected {
-            color: #000000;
             font-size: 15px;
         }
         &-delete {
@@ -205,6 +229,7 @@ watch(props, () => {
                 border-radius: 6px;
                 padding: 0 8px;
                 transition: box-shadow 0.5s ease-in-out;
+                color: #000000;
                 ::placeholder {
                     color: #000000;
                 }
@@ -305,6 +330,7 @@ watch(props, () => {
                     border-radius: 6px;
                     padding: 0 8px;
                     transition: box-shadow 0.5s ease-in-out;
+                    color: #000000;
                     ::placeholder {
                         color: #000000;
                     }
